@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    
+    
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+
+    <style type="text/css">
+      .platform-ios .manual-ios-statusbar-padding{
+        padding-top:20px;
+      }
+      .manual-remove-top-padding{
+        padding-top:0px; 
+      }
+      .manual-remove-top-padding .scroll{
+        padding-top:0px !important;
+      }
+      ion-list.manual-list-fullwidth div.list, .list.card.manual-card-fullwidth {
+        margin-left:-10px;
+        margin-right:-10px;
+      }
+      ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidth > .item {
+        border-radius:0px;
+        border-left:0px;
+        border-right: 0px;
+      }
+      .show-list-numbers-and-dots ul{
+        list-style-type: disc;
+        padding-left:40px;
+      }
+      .show-list-numbers-and-dots ol{
+        list-style-type: decimal;
+        padding-left:40px;
+      }
+      table{
+      background-color: white;
+      width: 100%;
+      padding-left: 20px;
+      text-align: left;
+      font-family: inherit;  
+      font-size: 15px;
+          margin-bottom: 10px;
+      }
+        td{
+            /*padding-left: 20px;
+            padding-top: 20px;*/
+            padding: 20px;
+        }
+        .ta{
+            text-align: right;
+            border-bottom: 1px ;
+            border-bottom-color: black;
+
+        }
+        
+        
+    </style>
+
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/routes.js"></script>
+    
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
+
+    <!-- Only required for Tab projects w/ pages in multiple tabs 
+    <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
+    -->
+
+  </head>
+  <body ng-app="app" animation="slide-left-right-ios7">
+      <script>
+      window.onload = function()
+      {
+          mostrar();
+          iniciar();
+          
+      }
+      
+      function iniciar(){
+        var url_Get = "http://localhost:8080/mmoj_ControleFinancas/wr/ControleFinancas";
+        var xmlhttp_Get = new XMLHttpRequest();
+        
+        xmlhttp_Get.onreadystatechange = function(){
+                    if(xmlhttp_Get.readyState == 4 && xmlhttp_Get.status == 200)
+                    {
+                        var myArr = JSON.parse(xmlhttp_Get.responseText);
+                        myFunction(myArr);
+                    }
+        };  
+          
+        xmlhttp_Get.open("GET", url_Get, true);
+        xmlhttp_Get.send();
+                
+        function myFunction(arr)
+                {
+                    var saldoDispesas = 0;
+                    var saldoLucro = 0;
+                   
+                   var i;
+                   for(i = 0; i<arr.length; i++)
+                   {
+                       if(arr[i].mmoj_tipo=='despesa'){
+                          saldoDispesas +=arr[i].mmoj_valor;
+                       }
+                       
+                       else if(arr[i].mmoj_tipo=='lucro'){
+                           saldoLucro +=arr[i].mmoj_valor;
+                       }
+                   
+                    }
+                    var total = saldoLucro-saldoDispesas;
+                   
+                     document.getElementById("mmoj_totalDes").value = saldoDispesas; 
+                     document.getElementById("mmoj_totalLuc").value = saldoLucro;
+                     document.getElementById("mmoj_total").value = total;
+                     
+                     
+                }
+            
+      }
+      
+          
+      function add(){
+          var mmoj_nome = document.getElementById("mmoj_nome").value;
+          var mmoj_valor = document.getElementById("mmoj_valor").value;
+          
+          var mmoj_radio = document.getElementsByName("radio").value;
+                  
+          if(document.getElementById("mmoj_lucro").checked){
+              mmoj_radio = "lucro";
+          }else if(document.getElementById("mmoj_despesa").checked){
+              mmoj_radio = "despesa";
+          }
+          
+          
+          var url = "http://localhost:8080/mmoj_ControleFinancas/wr/ControleFinancas";
+          var xmlhttp_put = new XMLHttpRequest();
+        
+        xmlhttp_put.open("PUT", url, true);
+        xmlhttp_put.setRequestHeader('Content-type', 'application/json');
+        xmlhttp_put.send('{"mmoj_nome":"'+mmoj_nome+'","mmoj_tipo":"'+mmoj_radio+'","mmoj_valor":'+mmoj_valor+'}');
+          mostrar();
+          iniciar();
+          
+      }
+      
+      
+      function mostrar(){
+          
+        var url = "http://localhost:8080/mmoj_ControleFinancas/wr/ControleFinancas";
+        var xmlhttp = new XMLHttpRequest();
+        
+        xmlhttp.onreadystatechange = function(){
+                    if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    {
+                        var myArr = JSON.parse(xmlhttp.responseText);
+                        myFunc(myArr);
+                    }
+        };  
+          
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+                
+        function myFunc(arr)
+                {
+                   var out='<div></div>';
+                   var saida = '<div></div>';
+                   var saldoDispesas = 0;
+                   var saldoLucro = 0;
+                    
+                   var i;
+                   for(i = 0; i<arr.length; i++)
+                   {
+                       if(arr[i].mmoj_tipo=='despesa'){
+                           out += '<table><tr><td>'+arr[i].mmoj_nome+'</td><td class="ta">R$'+arr[i].mmoj_valor+'</td></tr></table>';
+                         
+                            saldoDispesas +=arr[i].mmoj_valor;
+                       }
+                       
+                       else if(arr[i].mmoj_tipo=='lucro'){
+                           saida += '<table><tr><td>'+arr[i].mmoj_nome+'</td><td class="ta">R$'+arr[i].mmoj_valor+'</td></tr></table>';
+                           saldoLucro +=arr[i].mmoj_valor;
+                       }
+                   
+                    }
+                    //<h3>Total Dispesas: '+saldoDispesas+'</h1>';
+                    out+='<table class="final"><tr><td>Total de Despesas</td><td class="ta">R$'+saldoDispesas+'</td></tr></table>';
+                    saida+='<table class="final"><tr><td>Total de Lucro</td><td class="ta">R$'+saldoLucro+'</td></tr></table>';
+                     document.getElementById("despesa").innerHTML = out; 
+                     document.getElementById("lucro").innerHTML = saida;
+                }
+        }
+  </script>
+ 
+  
+  <div>
+  <div>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+  </div>
+</div>
+  </body>
+</html>

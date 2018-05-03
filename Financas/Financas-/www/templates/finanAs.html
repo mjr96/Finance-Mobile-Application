@@ -1,0 +1,54 @@
+<ion-view title="Finanças" id="page2">
+    <ion-content padding="true" style="background: url(img/XELn0ojhQ022d2wnE4bc_wallpaper-calculator4-768x432.jpg) no-repeat center;background-size:cover;" class="has-header">
+        <form id="finanAs-form1" class="list">
+            <label class="item item-input">
+                <span class="input-label">Nome:</span>
+                <input id="mmoj_nome" type="text" placeholder="Digite o nome">
+            </label>
+
+
+            <label class="item item-input">
+                <span class="input-label">Valor:</span>
+                <input id="mmoj_valor" type="text" placeholder="Digite o valor">
+            </label>
+
+
+            <div class="spacer" style="width: 300px; height: 8px;"></div>
+            <!--<ion-radio id="mmoj_lucro" name="radio" class="radioa">Lucro</ion-radio>
+      <ion-radio id="mmoj_despesa" name="radio" class="radioa">Despesa</ion-radio>-->
+
+            <fieldset class="widget uib_w_4 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="masb_grupo" id="masb_grupo" style="background-color:#ffffff">
+
+                <label class="radio radio-padding-left widget uib_w_5" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
+                <input type="radio" name="masb_grupo" id="mmoj_lucro"><font size="2.5">Lucro</font></label>
+                <div class="spacer" style="width: 300px; height: 9px;"></div>
+                <label class="radio radio-padding-left widget uib_w_6" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
+                <input type="radio" name="masb_grupo" id="mmoj_despesa"><font size="2.5">Despesa</font></label>
+            </fieldset>
+
+
+            <button id="mmoj_add" class="button button-positive button-block icon ion-android-add" onclick="add()"></button>
+
+        </form>
+
+        <form id="finanAs-form2" class="list">
+            <label class="item item-input">
+                <span class="input-label">Total de despesas:</span>
+                <input id="mmoj_totalDes" type="text" placeholder="">
+            </label>
+
+
+            <label class="item item-input">
+                <span class="input-label">Total de lucro:</span>
+                <input id="mmoj_totalLuc" type="text" placeholder="">
+            </label>
+
+
+            <label class="item item-input">
+                <span class="input-label">Total:</span>
+                <input id="mmoj_total" type="text" placeholder="">
+            </label>
+
+        </form>
+    </ion-content>
+</ion-view>
